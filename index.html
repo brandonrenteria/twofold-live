@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0c0b0a" />
+  <title>TWO FOLD</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,500;1,6..72,500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0c0b0a;
+      --elev: #161412;
+      --subtle: #1c1916;
+      --paper: #ebe6dc;
+      --paper-dim: #d8d0c4;
+      --ink: #1a1714;
+      --muted: #9a9388;
+      --faint: #6f6960;
+      --line: rgb(235 230 220 / 12%);
+      --danger: #c45c4a;
+      --ok: #7d9a78;
+      --sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+      --display: "Newsreader", ui-serif, Georgia, serif;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--paper); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+    button, [role="button"] { cursor: pointer; }
+    button { font: inherit; }
+    input, textarea { font: inherit; color: var(--paper); background: var(--subtle); border: 0; box-shadow: 0 0 0 1px var(--line); border-radius: 8px; }
+    input:focus, textarea:focus { outline: none; box-shadow: 0 0 0 1px rgb(216 208 196 / 55%); }
+    .page { min-height: 100dvh; display: flex; flex-direction: column; }
+    .hero { display: grid; min-height: 100dvh; }
+    @media (min-width: 960px) { .hero { grid-template-columns: 1.05fr 0.95fr; } }
+    .intro, .panel { padding: 2rem 1.5rem; }
+    @media (min-width: 640px) { .intro, .panel { padding: 3rem 2.5rem; } }
+    .intro { display: flex; flex-direction: column; justify-content: space-between; }
+    .panel { background: var(--elev); box-shadow: 0 0 0 1px rgb(235 230 220 / 8%); display: flex; align-items: center; }
+    .brand { display: flex; align-items: center; gap: 0.75rem; font-family: var(--display); font-size: 1.25rem; }
+    .kicker { letter-spacing: 0.22em; text-transform: uppercase; font-size: 0.7rem; color: var(--muted); font-weight: 500; }
+    h1 { font-family: var(--display); font-weight: 500; letter-spacing: -0.03em; font-size: clamp(2.2rem, 4vw, 3rem); line-height: 1.12; margin: 1rem 0 0; }
+    h1 em { display: block; font-style: italic; color: var(--paper-dim); }
+    .lede { max-width: 26rem; color: var(--muted); line-height: 1.55; font-size: 0.925rem; }
+    form { width: 100%; max-width: 28rem; margin: 0 auto; display: grid; gap: 1rem; }
+    label { display: grid; gap: 0.4rem; font-size: 0.75rem; font-weight: 500; color: var(--muted); }
+    input, textarea { height: 44px; padding: 0 0.75rem; width: 100%; }
+    textarea { min-height: 44px; max-height: 8rem; padding: 0.65rem 0.75rem; resize: none; }
+    .row { display: flex; gap: 0.5rem; }
+    .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: var(--subtle); padding: 4px; border-radius: 12px; }
+    .seg button { height: 40px; border: 0; background: transparent; color: var(--muted); border-radius: 8px; }
+    .seg button.on { background: var(--elev); color: var(--paper); box-shadow: 0 0 0 1px rgb(235 230 220 / 10%); }
+    .btn { height: 44px; border: 0; border-radius: 8px; padding: 0 1rem; font-weight: 500; }
+    .btn-primary { background: var(--paper); color: var(--ink); width: 100%; }
+    .btn-ghost { background: transparent; color: var(--paper); }
+    .btn-icon { width: 44px; height: 44px; display: grid; place-items: center; background: var(--elev); color: var(--paper); box-shadow: 0 0 0 1px var(--line); border: 0; border-radius: 8px; flex: none; }
+    .hint { font-size: 0.75rem; color: var(--faint); line-height: 1.5; }
+    .warn { color: var(--danger); font-size: 0.75rem; }
+    header.bar { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--line); }
+    .grow { flex: 1; min-width: 0; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; color: var(--faint); }
+    .badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 0.15rem 0.55rem; font-size: 11px; background: var(--subtle); color: var(--muted); box-shadow: 0 0 0 1px rgb(235 230 220 / 10%); }
+    .thread { flex: 1; overflow-y: auto; padding: 1.25rem 1rem; }
+    .col { max-width: 40rem; margin: 0 auto; display: flex; flex-direction: column; gap: 0.75rem; }
+    .bubble { max-width: 85%; }
+    .me { align-self: end; }
+    .them { align-self: start; }
+    .who { font-size: 11px; color: var(--faint); margin: 0 0 0.25rem 0.25rem; }
+    .body { padding: 0.6rem 0.9rem; font-size: 0.925rem; line-height: 1.5; white-space: pre-wrap; word-break: break-word; }
+    .me .body { background: var(--paper); color: var(--ink); border-radius: 20px 20px 4px 20px; }
+    .them .body { background: var(--elev); color: var(--paper); border-radius: 20px 20px 20px 4px; box-shadow: 0 0 0 1px rgb(235 230 220 / 8%); }
+    .sys { align-self: center; background: var(--subtle); color: var(--muted); border-radius: 12px; padding: 0.5rem 0.75rem; font-size: 0.75rem; text-align: center; }
+    .composer { display: flex; gap: 0.5rem; align-items: end; max-width: 40rem; margin: 0 auto; padding: 0.75rem 0.75rem max(0.75rem, env(safe-area-inset-bottom)); }
+    .composer-wrap { border-top: 1px solid var(--line); background: var(--elev); }
+    .empty { text-align: center; padding: 4rem 1rem; color: var(--muted); }
+    .empty h2 { font-family: var(--display); color: var(--paper); font-size: 1.6rem; margin: 0 0 0.5rem; }
+    img.pic { max-width: 100%; max-height: 16rem; border-radius: 12px; display: block; }
+    .banner { background: rgb(196 92 74 / 12%); color: var(--danger); font-size: 0.75rem; padding: 0.5rem 1rem; }
+    .hidden { display: none !important; }
+    .pass-wrap { position: relative; }
+    .pass-wrap input { padding-right: 2.75rem; }
+    .pass-wrap button { position: absolute; right: 0; top: 0; width: 44px; height: 44px; border: 0; background: transparent; color: var(--muted); }
+    .gate { min-height: 100dvh; display: grid; place-items: center; padding: 2rem; }
+    .gate form { width: min(18rem, 100%); display: grid; gap: 1.25rem; justify-items: center; }
+    .gate-mark { font-family: var(--display); font-size: 1.05rem; letter-spacing: 0.46em; margin: 0; font-weight: 500; }
+    .gate input { text-align: center; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="gate">
+      <form id="gate-form" autocomplete="off">
+        <p class="gate-mark">TWO FOLD</p>
+        <input id="gate-pass" type="password" name="password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-label="Password" />
+        <p class="warn hidden" id="gate-error"></p>
+      </form>
+    </div>
+  </div>
+  <script type="module">
+    /**
+     * Twofold production client (protocol v1)
+     * CLIENT A: replace the two placeholders below.
+     * Never paste the service_role key.
+     */
+    const SUPABASE_URL = "https://fdtgsthycvfoftuvljxz.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_3kIlK-pegQtayaEClxcwJA_QuCpmhA3";
+
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const GATE_SALT = "twofold-gate-v1";
+    const GATE_HASH = "50499b046bf32bded038def445eb135c3f4ab18a3284100af33e3e87a7046ff9";
+    const GATE_KEY = "twofold:gate-ok-v2";
+
+    const SESSION_KEY = "twofold:session-v4";
+    const DEVICE_KEY = "twofold:device-id";
+    const IDENTITY_KEY = "twofold:identity-v4";
+
+    function getDeviceId() {
+      let id = localStorage.getItem(DEVICE_KEY);
+      if (!id) {
+        id = crypto.randomUUID();
+        localStorage.setItem(DEVICE_KEY, id);
+      }
+      return id;
+    }
+    function readJson(key) {
+      try { return JSON.parse(localStorage.getItem(key) || "null"); } catch { return null; }
+    }
+    function writeJson(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+    function saveIdentity(fields) {
+      writeJson(IDENTITY_KEY, {
+        displayName: fields.displayName,
+        roomId: fields.roomId,
+        seat: fields.seat,
+        mode: fields.mode,
+      });
+    }
+    function saveSession(fields) {
+      saveIdentity(fields);
+      writeJson(SESSION_KEY, {
+        displayName: fields.displayName,
+        roomId: fields.roomId,
+        seat: fields.seat,
+        mode: fields.mode,
+        passphrase: fields.passphrase,
+      });
+    }
+    function clearSavedLogin() {
+      localStorage.removeItem(SESSION_KEY);
+    }
+    function samePerson(nameA, nameB) {
+      return String(nameA || "").trim().toLowerCase() === String(nameB || "").trim().toLowerCase();
+    }
+    async function openRoom({ name, roomId, pass, seat, mode, remember }) {
+      const roomHash = await roomHashHex(roomId);
+      const key = await deriveRoomKey(pass, roomId);
+      state.session = {
+        roomId, roomHash, key, displayName: name, senderId: getDeviceId(), seat, mode,
+      };
+      if (remember) saveSession({ displayName: name, roomId, seat, mode, passphrase: pass });
+      else saveIdentity({ displayName: name, roomId, seat, mode });
+      await showChat();
+    }
+
+    const PROTOCOL_VERSION = 1;
+    const KDF_ITERATIONS = 600000;
+    const KDF_SALT_PREFIX = "twofold-v1";
+    const ROOM_HASH_PREFIX = "twofold-room:";
+    const IV_BYTES = 12;
+    const MAX_TEXT = 4000;
+    const MAX_IMAGE = 500000;
+    const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+
+    const app = document.getElementById("app");
+    const liveReady = SUPABASE_URL && SUPABASE_ANON_KEY && !SUPABASE_URL.includes("YOUR_SUPABASE") && !SUPABASE_ANON_KEY.includes("YOUR_SUPABASE");
+
+    const state = {
+      session: null,
+      items: [],
+      seen: new Set(),
+      urls: [],
+      occupancy: new Map(),
+    };
+
+    function bytesToHex(bytes) {
+      return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+    }
+    function bytesToBase64(bytes) {
+      let binary = "";
+      const chunk = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunk) binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+      return btoa(binary);
+    }
+    function base64ToBytes(b64) {
+      const binary = atob(b64);
+      const out = new Uint8Array(binary.length);
+      for (let i = 0; i < binary.length; i++) out[i] = binary.charCodeAt(i);
+      return out;
+    }
+    function normalizeRoomId(input) {
+      return input.trim().toLowerCase().replace(/[\s-]/g, "");
+    }
+    function formatRoomId(hex) {
+      const n = normalizeRoomId(hex);
+      return n.replace(/(.{4})/g, "$1-").replace(/-$/, "");
+    }
+    function generateRoomId() {
+      const bytes = crypto.getRandomValues(new Uint8Array(16));
+      return formatRoomId(bytesToHex(bytes));
+    }
+    async function sha256(data) {
+      return new Uint8Array(await crypto.subtle.digest("SHA-256", data));
+    }
+    async function roomHashHex(roomId) {
+      const hash = await sha256(encoder.encode(ROOM_HASH_PREFIX + normalizeRoomId(roomId)));
+      return bytesToHex(hash);
+    }
+    async function deriveRoomKey(passphrase, roomId) {
+      const secret = passphrase.trim();
+      if (secret.length < 8) throw new Error("Use a passphrase of at least 8 characters.");
+      const salt = await sha256(encoder.encode(KDF_SALT_PREFIX + normalizeRoomId(roomId)));
+      const baseKey = await crypto.subtle.importKey("raw", encoder.encode(secret), "PBKDF2", false, ["deriveKey"]);
+      return crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt, iterations: KDF_ITERATIONS, hash: "SHA-256" },
+        baseKey,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["encrypt", "decrypt"],
+      );
+    }
+    async function encryptPayload(key, plaintext, roomHash) {
+      const iv = crypto.getRandomValues(new Uint8Array(IV_BYTES));
+      const aad = encoder.encode(roomHash);
+      const cipher = await crypto.subtle.encrypt({ name: "AES-GCM", iv, additionalData: aad, tagLength: 128 }, key, plaintext);
+      const cipherBytes = new Uint8Array(cipher);
+      const out = new Uint8Array(1 + IV_BYTES + cipherBytes.length);
+      out[0] = PROTOCOL_VERSION;
+      out.set(iv, 1);
+      out.set(cipherBytes, 1 + IV_BYTES);
+      return bytesToBase64(out);
+    }
+    async function decryptPayload(key, payloadB64, roomHash) {
+      const raw = base64ToBytes(payloadB64);
+      if (raw.length < 1 + IV_BYTES + 16) throw new Error("short");
+      if (raw[0] !== PROTOCOL_VERSION) throw new Error("version");
+      const iv = raw.slice(1, 1 + IV_BYTES);
+      const cipher = raw.slice(1 + IV_BYTES);
+      const aad = encoder.encode(roomHash);
+      return new Uint8Array(await crypto.subtle.decrypt({ name: "AES-GCM", iv, additionalData: aad, tagLength: 128 }, key, cipher));
+    }
+
+    function sniffMime(bytes) {
+      if (bytes.length < 12) return null;
+      if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) return "image/jpeg";
+      if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4e && bytes[3] === 0x47) return "image/png";
+      if (bytes[0] === 0x47 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x38) return "image/gif";
+      const riff = bytes[0] === 0x52 && bytes[1] === 0x49 && bytes[2] === 0x46 && bytes[3] === 0x46;
+      const webp = bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50;
+      if (riff && webp) return "image/webp";
+      return null;
+    }
+    function canvasToJpeg(canvas, quality) {
+      return new Promise((resolve, reject) => {
+        canvas.toBlob(async (blob) => {
+          if (!blob) return reject(new Error("encode"));
+          resolve(new Uint8Array(await blob.arrayBuffer()));
+        }, "image/jpeg", quality);
+      });
+    }
+    async function prepareImage(file) {
+      if (file.size > 8 * 1024 * 1024) throw new Error("Photo is too large. Use one under 8 MB.");
+      const buf = new Uint8Array(await file.arrayBuffer());
+      const sniffed = sniffMime(buf);
+      if (!sniffed) throw new Error("That file is not a JPEG, PNG, WebP, or GIF.");
+      if (buf.length <= MAX_IMAGE) return { bytes: buf, mime: sniffed };
+      const bitmap = await createImageBitmap(new Blob([buf], { type: sniffed }));
+      const scale = Math.min(1, 1280 / Math.max(bitmap.width, bitmap.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+      canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      bitmap.close();
+      let quality = 0.72;
+      let out = await canvasToJpeg(canvas, quality);
+      while (out.length > MAX_IMAGE && quality > 0.4) {
+        quality -= 0.1;
+        out = await canvasToJpeg(canvas, quality);
+      }
+      if (out.length > MAX_IMAGE) throw new Error("Photo is still too large after shrinking.");
+      return { bytes: out, mime: "image/jpeg" };
+    }
+
+    function markSvg() {
+      return `<svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect x="6" y="5" width="12" height="22" rx="2.5" fill="#ebe6dc"/><rect x="14" y="8" width="12" height="19" rx="2.5" fill="#d8d0c4"/></svg>`;
+    }
+
+
+    function showGate() {
+      app.innerHTML = `
+        <div class="gate">
+          <form id="gate-form" autocomplete="off">
+            <p class="gate-mark">TWO FOLD</p>
+            <input id="gate-pass" type="password" name="password" autocomplete="off" spellcheck="false" autocapitalize="off" aria-label="Password" />
+            <p class="warn hidden" id="gate-error"></p>
+          </form>
+        </div>`;
+      bindGate();
+    }
+
+    function bindGate() {
+      const form = document.getElementById("gate-form");
+      if (!form) return;
+      const input = document.getElementById("gate-pass");
+      const err = document.getElementById("gate-error");
+      form.onsubmit = async (e) => {
+        e.preventDefault();
+        const typed = input.value;
+        const hash = bytesToHex(await sha256(encoder.encode(GATE_SALT + typed)));
+        if (hash !== GATE_HASH) {
+          err.textContent = "No.";
+          err.classList.remove("hidden");
+          input.value = "";
+          input.focus();
+          return;
+        }
+        localStorage.setItem(GATE_KEY, "1");
+        showLock();
+      };
+      input.focus();
+    }
+
+    function showLock() {
+      app.innerHTML = `
+        <div class="hero">
+          <section class="intro">
+            <div class="brand">${markSvg()} Twofold</div>
+            <div>
+              <p class="kicker">A sealed room for two</p>
+              <h1>Write in private.<em>Leave nothing readable.</em></h1>
+              <p class="lede">Messages and photos are locked on this device before they move. The server only stores sealed data.</p>
+            </div>
+            <p class="hint">AES-GCM · PBKDF2 600,000 · no accounts · no WebRTC</p>
+          </section>
+          <section class="panel">
+            <form id="lock-form">
+              <div>
+                <h2 style="font-family:var(--display);font-size:1.6rem;margin:0 0 .25rem">Open the lock</h2>
+                <p class="hint">Same room ID and passphrase on both sides.</p>
+              </div>
+              <label>Your name <input id="name" maxlength="40" autocomplete="nickname" placeholder="How you appear in the room" /></label>
+              <div>
+                <span class="hint" style="display:block;margin-bottom:.4rem">Seat</span>
+                <div class="seg" id="seat-seg">
+                  <button type="button" data-seat="A" class="on">Client A</button>
+                  <button type="button" data-seat="B">Client B</button>
+                </div>
+              </div>
+              <label>Room ID
+                <div class="row">
+                  <input id="room" spellcheck="false" autocapitalize="off" placeholder="Generate or paste" />
+                  <button type="button" class="btn-icon" id="gen" aria-label="Generate room ID">⟳</button>
+                </div>
+              </label>
+              <label>Shared passphrase
+                <div class="pass-wrap">
+                  <input id="pass" type="password" autocomplete="off" spellcheck="false" placeholder="Four random words, said in person" />
+                  <button type="button" id="toggle-pass" aria-label="Show passphrase">show</button>
+                </div>
+              </label>
+              <p class="hint" id="mode-hint"></p>
+              <p class="warn hidden" id="form-error"></p>
+              <button class="btn btn-primary" id="unlock" type="submit">Unlock</button>
+            </form>
+          </section>
+        </div>`;
+
+      const remembered = readJson(IDENTITY_KEY) || {};
+      const mode = "live";
+      let seat = remembered.seat || "A";
+      if (remembered.displayName) document.getElementById("name").value = remembered.displayName;
+      if (remembered.roomId) document.getElementById("room").value = remembered.roomId;
+      const modeHint = document.getElementById("mode-hint");
+      modeHint.textContent = liveReady ? "Both phones use the same live room." : "This file is missing Supabase keys.";
+      for (const b of document.querySelectorAll("#seat-seg button")) b.classList.toggle("on", b.dataset.seat === seat);
+      document.getElementById("seat-seg").addEventListener("click", (e) => {
+        const btn = e.target.closest("button[data-seat]");
+        if (!btn) return;
+        seat = btn.dataset.seat;
+        for (const b of e.currentTarget.querySelectorAll("button")) b.classList.toggle("on", b === btn);
+      });
+      document.getElementById("gen").onclick = () => {
+        document.getElementById("room").value = generateRoomId();
+      };
+      document.getElementById("toggle-pass").onclick = () => {
+        const input = document.getElementById("pass");
+        input.type = input.type === "password" ? "text" : "password";
+      };
+      document.getElementById("lock-form").onsubmit = async (e) => {
+        e.preventDefault();
+        const err = document.getElementById("form-error");
+        err.classList.add("hidden");
+        const name = document.getElementById("name").value.trim();
+        const roomId = document.getElementById("room").value.trim();
+        const pass = document.getElementById("pass").value;
+        if (!name) return showErr("Add a name so the other person knows who is writing.");
+        if (!roomId) return showErr("Create or paste a room ID.");
+        if (!liveReady) return showErr("This file is missing SUPABASE_URL and SUPABASE_ANON_KEY.");
+        const btn = document.getElementById("unlock");
+        btn.disabled = true;
+        btn.textContent = "Forging the lock";
+        try {
+          await openRoom({ name, roomId, pass, seat, mode, remember: true });
+        } catch (ex) {
+          showErr(ex.message || "Could not open the room.");
+          btn.disabled = false;
+          btn.textContent = "Unlock";
+        }
+        function showErr(msg) {
+          err.textContent = msg;
+          err.classList.remove("hidden");
+        }
+      };
+    }
+
+    function createDemoTransport(roomHash) {
+      const key = "twofold:msgs:" + roomHash;
+      const channel = new BroadcastChannel("twofold:" + roomHash);
+      const read = () => {
+        try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch { return []; }
+      };
+      return {
+        async fetchHistory() { return read(); },
+        async send(payload) {
+          const message = { id: crypto.randomUUID(), room_hash: roomHash, payload, created_at: new Date().toISOString() };
+          const next = read().concat(message).slice(-500);
+          localStorage.setItem(key, JSON.stringify(next));
+          channel.postMessage({ type: "insert", message });
+          return message;
+        },
+        subscribe(onInsert) {
+          const onMessage = (event) => {
+            if (event.data?.type === "insert" && event.data.message) onInsert(event.data.message);
+          };
+          channel.addEventListener("message", onMessage);
+          return () => channel.removeEventListener("message", onMessage);
+        },
+      };
+    }
+
+    function createLiveTransport(roomHash) {
+      const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false, autoRefreshToken: false } });
+      let realtime = null;
+      async function loadRows() {
+        const { data, error } = await client.from("messages").select("id, room_hash, payload, created_at").eq("room_hash", roomHash).order("created_at", { ascending: true }).limit(500);
+        if (error) throw new Error(error.message);
+        return data || [];
+      }
+      return {
+        async fetchHistory() { return loadRows(); },
+        async send(payload) {
+          const { data, error } = await client.from("messages").insert({ room_hash: roomHash, payload }).select("id, room_hash, payload, created_at").single();
+          if (error) throw new Error(error.message);
+          return data;
+        },
+        subscribe(onInsert) {
+          let stopped = false;
+          let tick = 0;
+          const bindRealtime = () => {
+            if (realtime) {
+              try { client.removeChannel(realtime); } catch {}
+              realtime = null;
+            }
+            realtime = client.channel("twofold-room-" + roomHash.slice(0, 12) + "-" + Date.now().toString(36)).on("postgres_changes", { event: "INSERT", schema: "public", table: "messages", filter: "room_hash=eq." + roomHash }, (payload) => {
+              if (payload.new && payload.new.id) onInsert(payload.new);
+            }).subscribe();
+          };
+          bindRealtime();
+          const pull = async (force) => {
+            if (stopped) return;
+            const mine = ++tick;
+            try {
+              const rows = await Promise.race([
+                loadRows(),
+                new Promise((_, rej) => setTimeout(() => rej(new Error("pull-timeout")), 8000)),
+              ]);
+              if (stopped || mine !== tick) return;
+              for (const row of rows) if (row && row.id) onInsert(row);
+            } catch {
+              if (force) bindRealtime();
+            }
+          };
+          const onWake = () => {
+            if (document.visibilityState === "hidden") return;
+            bindRealtime();
+            pull(true);
+          };
+          const interval = setInterval(() => pull(false), 1500);
+          document.addEventListener("visibilitychange", onWake);
+          window.addEventListener("online", onWake);
+          window.addEventListener("focus", onWake);
+          window.addEventListener("pageshow", onWake);
+          pull(true);
+          return () => {
+            stopped = true;
+            clearInterval(interval);
+            document.removeEventListener("visibilitychange", onWake);
+            window.removeEventListener("online", onWake);
+            window.removeEventListener("focus", onWake);
+            window.removeEventListener("pageshow", onWake);
+            if (realtime) client.removeChannel(realtime);
+          };
+        },
+      };
+    }
+
+    async function openRow(row, session) {
+      if (state.seen.has(row.id)) return null;
+      state.seen.add(row.id);
+      try {
+        const plain = decoder.decode(await decryptPayload(session.key, row.payload, session.roomHash));
+        const inner = JSON.parse(plain);
+        if (!inner || inner.v !== 1 || (inner.type !== "text" && inner.type !== "image")) throw new Error("shape");
+        const item = {
+          id: row.id,
+          createdAt: row.created_at,
+          senderId: String(inner.senderId || ""),
+          senderName: String(inner.senderName || "Unknown").slice(0, 40),
+          mine: inner.senderId === session.senderId || samePerson(inner.senderName, session.displayName),
+          kind: inner.type,
+          text: inner.type === "text" ? String(inner.body || "") : "",
+          imageUrl: null,
+        };
+        if (inner.type === "image") {
+          const bytes = base64ToBytes(inner.body);
+          const mime = sniffMime(bytes);
+          if (!mime) throw new Error("image");
+          item.imageUrl = URL.createObjectURL(new Blob([bytes], { type: mime }));
+          state.urls.push(item.imageUrl);
+        }
+        return item;
+      } catch {
+        return { id: row.id, createdAt: row.created_at, senderId: "unknown", senderName: "Unknown", mine: false, kind: "failed" };
+      }
+    }
+
+    function renderItems() {
+      const col = document.getElementById("col");
+      if (!col) return;
+      col.replaceChildren();
+      const occ = new Map();
+      occ.set(state.session.displayName.trim().toLowerCase() || state.session.senderId, state.session.displayName);
+      if (state.items.length === 0) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        const h = document.createElement("h2");
+        h.textContent = "The room is empty.";
+        const p = document.createElement("p");
+        p.textContent = "Send a line so the other person can confirm the lock opens.";
+        empty.append(h, p);
+        col.append(empty);
+      }
+      for (const item of state.items) {
+        if (item.kind !== "failed") occ.set((item.senderName || "").trim().toLowerCase() || item.senderId, item.senderName);
+        if (item.kind === "failed") {
+          const el = document.createElement("div");
+          el.className = "sys";
+          el.textContent = "Could not unlock this message. Check the passphrase and room ID.";
+          col.append(el);
+          continue;
+        }
+        const wrap = document.createElement("article");
+        wrap.className = "bubble " + (item.mine ? "me" : "them");
+        const who = document.createElement("p");
+        who.className = "who";
+        who.textContent = item.mine ? "You" : item.senderName;
+        const body = document.createElement("div");
+        body.className = "body";
+        if (item.kind === "image" && item.imageUrl) {
+          const img = document.createElement("img");
+          img.className = "pic";
+          img.alt = "";
+          img.src = item.imageUrl;
+          body.append(img);
+        } else {
+          body.textContent = item.text;
+        }
+        wrap.append(who, body);
+        col.append(wrap);
+      }
+      const extra = occ.size > 2;
+      const banner = document.getElementById("banner");
+      if (banner) banner.classList.toggle("hidden", !extra);
+      const meta = document.getElementById("meta");
+      if (meta) meta.textContent = formatRoomId(normalizeRoomId(state.session.roomId)).slice(0, 14) + " · " + occ.size + " of 2";
+      const thread = document.getElementById("thread");
+      if (thread) thread.scrollTop = thread.scrollHeight;
+    }
+
+    async function showChat() {
+      for (const url of state.urls) URL.revokeObjectURL(url);
+      state.urls = [];
+      state.items = [];
+      state.seen = new Set();
+      const session = state.session;
+      const transport = createLiveTransport(session.roomHash);
+      state.transport = transport;
+
+      app.innerHTML = `
+        <div class="page">
+          <header class="bar">
+            <div class="brand">${markSvg()}</div>
+            <div class="grow">
+              <div style="display:flex;gap:.5rem;align-items:center">
+                <strong style="font-family:var(--display);font-weight:500">Twofold</strong>
+                <span class="badge">Live</span>
+              </div>
+              <div class="mono" id="meta"></div>
+            </div>
+            <button class="btn btn-ghost" id="leave">Lock</button>
+          </header>
+          <div class="banner hidden" id="banner">More than two people have unlocked this passphrase. Anyone with it can read the room.</div>
+          <div class="thread" id="thread"><div class="col" id="col"><div class="empty">Opening sealed history…</div></div></div>
+          <div class="composer-wrap">
+            <form class="composer" id="send-form">
+              <input type="file" id="file" accept="image/jpeg,image/png,image/webp,image/gif" class="hidden" />
+              <button type="button" class="btn-icon" id="photo" aria-label="Send a photo">▣</button>
+              <textarea id="draft" rows="1" placeholder="Write a sealed line"></textarea>
+              <button class="btn-icon" id="send" type="submit" aria-label="Send" style="background:var(--paper);color:var(--ink)">➤</button>
+            </form>
+          </div>
+        </div>`;
+
+      document.getElementById("leave").onclick = () => {
+        transport.unsubscribe?.();
+        clearSavedLogin();
+        state.session = null;
+        showLock();
+      };
+      document.getElementById("photo").onclick = () => document.getElementById("file").click();
+      document.getElementById("file").onchange = async (e) => {
+        const file = e.target.files && e.target.files[0];
+        e.target.value = "";
+        if (!file) return;
+        try {
+          const prepared = await prepareImage(file);
+          await sendInner("image", bytesToBase64(prepared.bytes), prepared.mime);
+        } catch (ex) {
+          alert(ex.message || "Could not send the photo.");
+        }
+      };
+      document.getElementById("send-form").onsubmit = async (e) => {
+        e.preventDefault();
+        const text = document.getElementById("draft").value.trim();
+        if (!text) return;
+        if (text.length > MAX_TEXT) return alert("Keep messages under " + MAX_TEXT + " characters.");
+        try {
+          await sendInner("text", text);
+          document.getElementById("draft").value = "";
+        } catch (ex) {
+          alert(ex.message || "Could not send.");
+        }
+      };
+      document.getElementById("draft").addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          document.getElementById("send-form").requestSubmit();
+        }
+      });
+
+      let sending = false;
+      async function sendInner(type, body, mime) {
+        if (sending) return;
+        sending = true;
+        const sendBtn = document.getElementById("send");
+        const photoBtn = document.getElementById("photo");
+        if (sendBtn) sendBtn.disabled = true;
+        if (photoBtn) photoBtn.disabled = true;
+        try {
+          const inner = { v: 1, type, senderId: session.senderId, senderName: session.displayName, ts: Date.now(), body };
+          if (mime) inner.mime = mime;
+          const payload = await encryptPayload(session.key, encoder.encode(JSON.stringify(inner)), session.roomHash);
+          const row = await transport.send(payload);
+          const item = await openRow(row, session);
+          if (item) {
+            state.items.push(item);
+            renderItems();
+          }
+        } finally {
+          sending = false;
+          if (sendBtn) sendBtn.disabled = false;
+          if (photoBtn) photoBtn.disabled = false;
+        }
+      }
+
+      try {
+        const history = await transport.fetchHistory();
+        for (const row of history) {
+          const item = await openRow(row, session);
+          if (item) state.items.push(item);
+        }
+      } catch (ex) {
+        alert(ex.message || "Could not load messages.");
+      }
+      renderItems();
+      const unsub = transport.subscribe(async (row) => {
+        const item = await openRow(row, session);
+        if (item) {
+          state.items.push(item);
+          renderItems();
+        }
+      });
+      document.getElementById("leave").onclick = () => {
+        unsub();
+        for (const url of state.urls) URL.revokeObjectURL(url);
+        clearSavedLogin();
+        state.session = null;
+        showLock();
+      };
+    }
+
+    async function boot() {
+      if (localStorage.getItem(GATE_KEY) !== "1") {
+        bindGate();
+        return;
+      }
+      const saved = readJson(SESSION_KEY);
+      if (saved && saved.roomId && saved.passphrase && saved.displayName) {
+        try {
+          await openRoom({
+            name: saved.displayName,
+            roomId: saved.roomId,
+            pass: saved.passphrase,
+            seat: saved.seat || "A",
+            mode: "live",
+            remember: true,
+          });
+          return;
+        } catch {
+          clearSavedLogin();
+        }
+      }
+      showLock();
+    }
+    boot();
+  </script>
+</body>
+</html>
+

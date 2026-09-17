@@ -1,2 +1,6 @@
-# twofold-live
-TwoFold sealed chat — public Vercel deploy source
+# TwoFold
+
+Sealed encrypted chat for two people.
+
+- Client: static `index.html` (AES-GCM / PBKDF2, no accounts)
+- Transport: Supabase
